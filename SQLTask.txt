@@ -1,0 +1,72 @@
+3. 
+-- Departments cədvəli
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY IDENTITY(1,1),
+    DepartmentName NVARCHAR(100) NOT NULL
+);
+
+-- Employees cədvəli
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY IDENTITY(1,1),
+    EmployeeName NVARCHAR(100) NOT NULL,
+    DepartmentID INT NOT NULL,
+    Salary DECIMAL(10, 2) NOT NULL,
+    CONSTRAINT FK_Employees_Departments FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+);
+
+-- Projects cədvəli
+CREATE TABLE Projects (
+    ProjectID INT PRIMARY KEY IDENTITY(1,1),
+    ProjectName NVARCHAR(100) NOT NULL,
+    Budget DECIMAL(10, 2) NOT NULL
+);
+
+-- EmployeeProjects cədvəli (Many-to-Many)
+CREATE TABLE EmployeeProjects (
+    EmployeeProjectID INT PRIMARY KEY IDENTITY(1,1),
+    EmployeeID INT NOT NULL,
+    ProjectID INT NOT NULL,
+    HoursWorked INT NOT NULL,
+    CONSTRAINT FK_EmployeeProjects_Employees FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    CONSTRAINT FK_EmployeeProjects_Projects FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID)
+);
+
+-- Departments
+INSERT INTO Departments (DepartmentName)
+VALUES 
+('IT'),
+('HR'),
+('Marketing');
+
+-- Employees
+INSERT INTO Employees (EmployeeName, DepartmentID, Salary)
+VALUES
+('John Doe', 1, 2500.00),
+('Jane Smith', 1, 3000.00),
+('Ali Veli', 2, 2000.00),
+('Leyla Mammadova', 3, 2200.00);
+
+-- Projects
+INSERT INTO Projects (ProjectName, Budget)
+VALUES
+('Website Development', 10000.00),
+('Mobile App', 15000.00),
+('Marketing Campaign', 5000.00);
+
+-- EmployeeProjects
+INSERT INTO EmployeeProjects (EmployeeID, ProjectID, HoursWorked)
+VALUES
+(1, 1, 50), 
+(1, 2, 30), 
+(2, 1, 40), 
+(3, 3, 20), 
+(4, 3, 25); 
+
+
+3.1 Hər bir işçinin adı, çalışdığı şöbə və maaşı ilə birlikdə hansı layihələrdə iştirak etdiyini və neçə saat işlədiyini göstər.
+3.2 Layihələri və həmin layihələrdə iştirak edən işçilərin adlarını göstər. Əgər layihədə işçi iştirak etməyibsə, bu layihə də siyahıda görünməlidir.
+3.3 Hər bir işçinin hansı layihədə iştirak etdiyini və əgər hansısa işçi heç bir layihədə iştirak etməyibsə, işçinin adı ilə birlikdə həmin məlumatı göstər.
+3.4 Hər bir işçini və layihəni göstər. Əgər bir işçi heç bir layihədə iştirak etmirsə və ya bir layihədə heç bir işçi iştirak etmirsə, bu məlumatlar da göstərilməlidir.
+3.5 Eyni şöbədə çalışan işçiləri cütlüklər şəklində göstərin. (Hər iki işçidən ibarət cütlük bir dəfə göstərilməlidir.)
+3.6 Hər bir layihə üçün işlənmiş ümumi saatı (TotalHours) və həmin layihəyə sərf olunmuş büdcəni göstər.
+3.7 Ən çox saat işlənmiş layihəni və həmin layihədə iştirak edən işçilərin adlarını göstər.
